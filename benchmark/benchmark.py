@@ -3,14 +3,19 @@ import random;
 import os;
 import time;
 import sys;
-from multiprocessing import Pool
+import timeit;
+from multiprocessing import Pool;
+import argparse;
+import pdb;
+
 
 # path to the folder with the queries
 query_path = "queries"
-query_file_names = []
+query_file_names = os.listdir(query_path)
 queries = []
-num_processes = 5
+num_processes = 10
 minutes = 1
+num_repetitions = 10
 random.seed("asd");
 
 # HANA connection configurations
@@ -30,7 +35,7 @@ def getQueryFrom(filename):
 
 # loads all queries from the files in query_path into an array
 def loadQueries():
-    query_file_names = os.listdir(query_path)
+    # query_file_names = os.listdir(query_path)
     for query_file in query_file_names:
         queries.append(getQueryFrom(query_file))
 
@@ -53,7 +58,30 @@ def runRandomQueriesFor(minutes):
     except:
         print( "Unexpected error:", sys.exc_info()[0])
 
+def benchmarkRandomQueries():
+    with Pool(processes=num_processes) as p:
+            print("Total Number of executed Queries", sum(p.map(runRandomQueriesFor, [minutes]*num_processes)))
+
+def benchmarkAllQueries():
+    connection = openConnection()
+    cursor = connection.cursor()
+    for index, query in enumerate(queries):
+        t1 = time.time()
+        for i in range(0, num_repetitions):
+            cursor.execute(query)
+        t2 = time.time()
+        avg_time = (t2 - t1) / num_repetitions
+        print("Query: " + query_file_names[index] + " performed at an average of: " + str(avg_time) + " seconds")
 
 loadQueries()
-with Pool(processes=num_processes) as p:
-        print("Total Number of executed Queries", sum(p.map(runRandomQueriesFor, [minutes]*num_processes)))
+
+parser = argparse.ArgumentParser()
+parser.add_argument('mode', choices=['all_random', 'single'])
+args = parser.parse_args()
+if(args.mode == 'single'):
+    print("starting to benchmark all tpch queries...")
+    benchmarkAllQueries()
+
+if(args.mode == 'all_random'):
+    print("starting to benchmark all tpch queries in a random order within: "+ str(minutes) +" minutes...")
+    benchmarkRandomQueries()
