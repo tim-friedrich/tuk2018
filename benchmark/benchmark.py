@@ -59,8 +59,12 @@ def runRandomQueriesFor(minutes):
         print( "Unexpected error:", sys.exc_info()[0])
 
 def benchmarkRandomQueries():
-    with Pool(processes=num_processes) as p:
-            print("Total Number of executed Queries", sum(p.map(runRandomQueriesFor, [minutes]*num_processes)))
+    query_count = 0
+    for i in range(0, num_repetitions):
+        with Pool(processes=num_processes) as p:
+            query_count += sum(p.map(runRandomQueriesFor, [minutes]*num_processes))
+
+    print("Total Number of executed Queries in average ", query_count/num_repetitions)
 
 def benchmarkAllQueries():
     connection = openConnection()
