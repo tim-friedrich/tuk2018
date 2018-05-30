@@ -1,8 +1,5 @@
-import pyhdb;
-import os;
 import time;
 import sys;
-import timeit;
 from multiprocessing import Pool;
 import argparse;
 import pdb;
@@ -95,7 +92,7 @@ if __name__ == '__main__':
     num_repetitions = args.repetitions
     duration = args.duration
     num_processes = args.processes
-    
+
     host = args.host
     port = args.port
     user = args.user
