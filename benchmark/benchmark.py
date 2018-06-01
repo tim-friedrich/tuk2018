@@ -100,7 +100,6 @@ def printConfig():
     print('#'*30)
     print('\n')
 
-
 if __name__ == '__main__':
     # loadQueries()
     addCommandLineArguments()
