@@ -15,10 +15,11 @@ class QueryManager:
             self.queries.append(self.getQueryFrom(query_file))
 
     def getQueryFrom(self, filename):
-        fd = open(self.query_path +"/"+filename, 'r')
-        query = fd.read()
-        fd.close()
-        return query
+        if('.sql' in filename):
+            fd = open(self.query_path +"/"+filename, 'r')
+            query = fd.read()
+            fd.close()
+            return query
 
     def getRandomQuery(self):
         return random.choice(self.queries)
