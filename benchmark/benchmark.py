@@ -85,6 +85,22 @@ def addCommandLineArguments():
         '--password',
         help="The database password")
 
+def printConfig():
+    print('\n')
+    print('#'*30)
+    print('## Starting benchmark with:')
+    print('## mode:', args.mode)
+    print('## seed:', args.seed)
+    print('## repetitions:', args.repetitions)
+    print('## processes:', args.processes)
+    print('## Database:')
+    print('## host:', host)
+    print('## port:', port)
+    print('## user:', user)
+    print('#'*30)
+    print('\n')
+
+
 if __name__ == '__main__':
     # loadQueries()
     addCommandLineArguments()
@@ -97,6 +113,7 @@ if __name__ == '__main__':
     port = args.port
     user = args.user
     password = args.password
+    printConfig()
     query_manager = QueryManager(args.query_folder)
     query_manager.setSeed(args.seed)
     if(args.mode == 'single'):
