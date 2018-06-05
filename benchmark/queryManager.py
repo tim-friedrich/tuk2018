@@ -1,5 +1,6 @@
 import random;
 import os
+import subprocess
 
 class QueryManager:
     queries = []
@@ -20,6 +21,10 @@ class QueryManager:
             query = fd.read()
             fd.close()
             return query
+
+    def parameterizedQuery(self, query_name):
+        result = subprocess.run(["qgen", query_name], stdout=subprocess.PIPE)
+        return result.stdout
 
     def getRandomQuery(self):
         return random.choice(self.queries)
