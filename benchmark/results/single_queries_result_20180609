@@ -1,0 +1,37 @@
+
+
+##############################
+## Starting benchmark with:
+## mode: single
+## seed: testseed
+## repetitions: 20
+## processes: 15
+## Database:
+## host: vm-tuk18-hana01.eaalab.hpi.uni-potsdam.de
+## port: 30015
+## user: SYSTEM
+##############################
+
+
+Starting to benchmark all tpch queries...
+Query: 8.sql performed at an average of: 0.26492091417312624 seconds
+Query: 3.sql performed at an average of: 1.3662056565284728 seconds
+Query: 1.sql performed at an average of: 6.775269258022308 seconds
+Query: 11.sql performed at an average of: 0.23722625970840455 seconds
+Query: 20.sql performed at an average of: 0.11238570213317871 seconds
+Query: 10.sql performed at an average of: 1.3357046484947204 seconds
+Query: 2.sql performed at an average of: 0.127143931388855 seconds
+Query: 19.sql performed at an average of: 0.09172532558441163 seconds
+Query: 13.sql performed at an average of: 2.09152330160141 seconds
+Query: 7.sql performed at an average of: 0.6393181324005127 seconds
+Query: 22.sql performed at an average of: 0.8479856133460999 seconds
+Query: 21.sql performed at an average of: 4.825462925434112 seconds
+Query: 5.sql performed at an average of: 0.6159527420997619 seconds
+Query: 18.sql performed at an average of: 5.748134899139404 seconds
+Query: 12.sql performed at an average of: 0.795583713054657 seconds
+Query: 9.sql performed at an average of: 4.198825812339782 seconds
+Query: 14.sql performed at an average of: 0.8259268164634704 seconds
+Query: 4.sql performed at an average of: 0.4423620343208313 seconds
+Query: 17.sql performed at an average of: 0.13656922578811645 seconds
+Query: 16.sql performed at an average of: 0.5148885369300842 seconds
+Query: 6.sql performed at an average of: 0.3892741560935974 seconds
