@@ -1,8 +1,9 @@
-import time;
-import sys;
-from multiprocessing import Pool;
-import argparse;
-import pdb;
+import time
+import sys
+from multiprocessing import Pool
+import argparse
+import pdb
+import re
 from connectionManager import ConnectionManager
 from queryManager import QueryManager
 
@@ -11,7 +12,8 @@ query_manager = None
 
 # executes a random query from the queries array
 def executeRandomQuery(connection):
-    connection.executeQuery(
+    executeQuery(
+        connection,
         query_manager.getRandomQuery()
     )
 
@@ -42,10 +44,16 @@ def benchmarkAllQueries():
     for query in query_manager.queries:
         t1 = time.time()
         for i in range(0, num_repetitions):
-            connection.executeQuery(query)
+            executeQuery(connection, query)
         t2 = time.time()
         avg_time = (t2 - t1) / num_repetitions
         print("Query: " + query_manager.getNameFor(query) + " performed at an average of: " + str(avg_time) + " seconds")
+
+def executeQuery(connection, query):
+    subqueries = re.sub(';\\s+', ';', query).split(';')
+    for q in subqueries:
+        if len(q) > 0:
+            connection.executeQuery(q)
 
 def addCommandLineArguments():
     parser.add_argument('mode', choices=['all_random', 'single'])
