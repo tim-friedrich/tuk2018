@@ -10,8 +10,8 @@ select
 from
 	orders
 where
-	o_orderdate >= date ':1'
-	and o_orderdate < date ':1' + interval '3' month
+	o_orderdate >= TO_DATE(':1', 'yyyy-mm-dd')
+	and o_orderdate < ADD_MONTHS(TO_DATE(':1', 'yyyy-mm-dd'), 3)
 	and exists (
 		select
 			*
@@ -25,4 +25,3 @@ group by
 	o_orderpriority
 order by
 	o_orderpriority;
-:n -1

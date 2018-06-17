@@ -17,8 +17,8 @@ where
 	c_mktsegment = ':1'
 	and c_custkey = o_custkey
 	and l_orderkey = o_orderkey
-	and o_orderdate < date ':2'
-	and l_shipdate > date ':2'
+	and o_orderdate < TO_DATE(':2', 'yyyy-mm-dd')
+	and l_shipdate > TO_DATE(':2', 'yyyy-mm-dd')
 group by
 	l_orderkey,
 	o_orderdate,
@@ -26,4 +26,3 @@ group by
 order by
 	revenue desc,
 	o_orderdate;
-:n 10

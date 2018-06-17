@@ -15,6 +15,5 @@ from
 	part
 where
 	l_partkey = p_partkey
-	and l_shipdate >= date ':1'
-	and l_shipdate < date ':1' + interval '1' month;
-:n -1
+	and l_shipdate >= TO_DATE(':1', 'yyyy-mm-dd')
+	and l_shipdate < ADD_MONTHS(TO_DATE(':1', 'yyyy-mm-dd'), 1);

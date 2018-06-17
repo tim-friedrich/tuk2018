@@ -9,8 +9,7 @@ select
 from
 	lineitem
 where
-	l_shipdate >= date ':1'
-	and l_shipdate < date ':1' + interval '1' year
+	l_shipdate >= TO_DATE(':1', 'yyyy-mm-dd')
+	and l_shipdate < ADD_YEARS(TO_DATE(':1', 'yyyy-mm-dd'), 1)
 	and l_discount between :2 - 0.01 and :2 + 0.01
 	and l_quantity < :3;
-:n -1
