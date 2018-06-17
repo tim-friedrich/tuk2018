@@ -41,13 +41,16 @@ def benchmarkRandomQueries():
 
 def benchmarkAllQueries():
     connection = ConnectionManager(host, port, user, password)
-    for query in query_manager.queries:
+    for query_num in range(1, 23):
         t1 = time.time()
         for i in range(0, num_repetitions):
-            executeQuery(connection, query)
+            executeQuery(
+                connection, 
+                query_manager.parameterizedQuery(str(query_num)).decode("utf-8")
+                )
         t2 = time.time()
         avg_time = (t2 - t1) / num_repetitions
-        print("Query: " + query_manager.getNameFor(query) + " performed at an average of: " + str(avg_time) + " seconds")
+        print("Query: " + str(query_num) + " performed at an average of: " + str(avg_time) + " seconds")
 
 def executeQuery(connection, query):
     subqueries = re.sub(';\\s+', ';', query).split(';')
