@@ -62,10 +62,6 @@ def addCommandLineArguments():
     parser.add_argument('mode', choices=['all_random', 'single'])
     ### General script config ###
     parser.add_argument(
-        '--query-folder',
-        default="queries",
-        help="The folder where the .sql file are stored used for the benchmark.")
-    parser.add_argument(
         '--seed',
         default="testseed", help="The seed used for random selections")
     parser.add_argument(
@@ -124,7 +120,7 @@ if __name__ == '__main__':
     user = args.user
     password = args.password
     printConfig()
-    query_manager = QueryManager(args.query_folder)
+    query_manager = QueryManager()
     query_manager.setSeed(args.seed)
     if(args.mode == 'single'):
         print("Starting to benchmark all tpch queries...")

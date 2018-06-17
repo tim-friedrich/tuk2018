@@ -3,34 +3,13 @@ import os
 import subprocess
 
 class QueryManager:
-    queries = []
-
-    def __init__(self, query_path):
-        self.query_path = query_path
-        self.query_file_names = os.listdir(query_path)
-        self.loadQueries()
-
-    # loads all queries from the files in query_path into an array
-    def loadQueries(self):
-        for query_file in self.query_file_names:
-            self.queries.append(self.getQueryFrom(query_file))
-
-    def getQueryFrom(self, filename):
-        if('.sql' in filename):
-            fd = open(self.query_path +"/"+filename, 'r')
-            query = fd.read()
-            fd.close()
-            return query
 
     def parameterizedQuery(self, query_name):
         result = subprocess.run(["qgen", query_name], stdout=subprocess.PIPE)
         return result.stdout
 
     def getRandomQuery(self):
-        return random.choice(self.queries)
+        return self.parameterizedQuery(str(random.randint(1, 22))).decode('utf-8')
 
     def setSeed(self, seed):
         random.seed(seed);
-
-    def getNameFor(self, query):
-        return self.query_file_names[self.queries.index(query)]
