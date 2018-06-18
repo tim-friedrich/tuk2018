@@ -1,0 +1,38 @@
+
+
+##############################
+## Starting benchmark with:
+## mode: single
+## seed: testseed
+## repetitions: 20
+## processes: 15
+## Database:
+## host: vm-tuk18-hana01.eaalab.hpi.uni-potsdam.de
+## port: 30015
+## user: SYSTEM
+##############################
+
+
+Starting to benchmark all tpch queries...
+Query: 1 performed at an average of: 7.147113859653473 seconds
+Query: 2 performed at an average of: 0.17630081176757811 seconds
+Query: 3 performed at an average of: 1.3864763140678407 seconds
+Query: 4 performed at an average of: 0.4563362717628479 seconds
+Query: 5 performed at an average of: 0.7367165565490723 seconds
+Query: 6 performed at an average of: 0.4178133487701416 seconds
+Query: 7 performed at an average of: 0.7388428092002869 seconds
+Query: 8 performed at an average of: 0.3111982822418213 seconds
+Query: 9 performed at an average of: 4.610829377174378 seconds
+Query: 10 performed at an average of: 1.2424426674842834 seconds
+Query: 11 performed at an average of: 0.2521644592285156 seconds
+Query: 12 performed at an average of: 0.8415859937667847 seconds
+Query: 13 performed at an average of: 2.198126268386841 seconds
+Query: 14 performed at an average of: 0.8281009674072266 seconds
+Query: 15 performed at an average of: 0.5295169353485107 seconds
+Query: 16 performed at an average of: 0.5250971198081971 seconds
+Query: 17 performed at an average of: 0.15025250911712645 seconds
+Query: 18 performed at an average of: 6.462407517433166 seconds
+Query: 19 performed at an average of: 0.11085346937179566 seconds
+Query: 20 performed at an average of: 0.14954640865325927 seconds
+Query: 21 performed at an average of: 5.334993541240692 seconds
+Query: 22 performed at an average of: 0.8453516960144043 seconds
