@@ -12,15 +12,12 @@ query_manager = None
 
 # executes a random query from the queries array
 def executeRandomQuery(connection):
-    executeQuery(
-        connection,
-        query_manager.getRandomQuery()
-    )
+    connection.runQuery(query_manager.getRandomQuery())
 
 # Executes a random selection of queries until a time threshold is reached
 def runRandomQueriesFor(minutes):
     try:
-        connection = ConnectionManager(host, port, user, password)
+        connection = ConnectionManager(True)
         start_time = time.time()
         number_queries = 0
 
@@ -40,23 +37,16 @@ def benchmarkRandomQueries():
     print("Total Number of executed Queries in average ", query_count/num_repetitions)
 
 def benchmarkAllQueries():
-    connection = ConnectionManager(host, port, user, password)
+    connection = ConnectionManager(False)
     for query_num in range(1, 23):
         t1 = time.time()
         for i in range(0, num_repetitions):
-            executeQuery(
-                connection, 
-                query_manager.parameterizedQuery(str(query_num)).decode("utf-8")
-                )
+            connection.runQuery(query_num)
+
         t2 = time.time()
         avg_time = (t2 - t1) / num_repetitions
         print("Query: " + str(query_num) + " performed at an average of: " + str(avg_time) + " seconds")
 
-def executeQuery(connection, query):
-    subqueries = re.sub(';\\s+', ';', query).split(';')
-    for q in subqueries:
-        if len(q) > 0:
-            connection.executeQuery(q)
 
 def addCommandLineArguments():
     parser.add_argument('mode', choices=['all_random', 'single'])
@@ -78,19 +68,6 @@ def addCommandLineArguments():
         default = 1,
         help="The duration in minutes until the test is stopped. Currently used for random execution.")
 
-    ### connection configuration ###
-    parser.add_argument(
-        '--host',
-        help="The database host as url or ip address")
-    parser.add_argument(
-        '--port',
-        type=int, help="The database port")
-    parser.add_argument(
-        '--user',
-        help="The database user")
-    parser.add_argument(
-        '--password',
-        help="The database password")
 
 def printConfig():
     print('\n')
@@ -100,10 +77,6 @@ def printConfig():
     print('## seed:', args.seed)
     print('## repetitions:', args.repetitions)
     print('## processes:', args.processes)
-    print('## Database:')
-    print('## host:', host)
-    print('## port:', port)
-    print('## user:', user)
     print('#'*30)
     print('\n')
 
@@ -115,10 +88,6 @@ if __name__ == '__main__':
     duration = args.duration
     num_processes = args.processes
 
-    host = args.host
-    port = args.port
-    user = args.user
-    password = args.password
     printConfig()
     query_manager = QueryManager()
     query_manager.setSeed(args.seed)
