@@ -143,7 +143,7 @@ class TPCH():
 
     @staticmethod
     def add_load(queries):
-        regex = re.compile('Query: (\\d+)\\.sql performed at an average of: ([\\d.]+) seconds')
+        regex = re.compile('Query: (\\d+)(?:\\.sql){0,1} performed at an average of: ([\\d.]+) seconds')
         with open(sys.argv[1]) as f:
             lines = f.read().split('\n')
             for line in lines:
@@ -398,7 +398,7 @@ if __name__ == '__main__':
     accessed_columns = Benchmark_accessed_columns(tpch)
     accessed_size = sum([c.size() for c in accessed_columns])
     print("sum_size", sum_size/accessed_size)
-    for num_backends in range(1, 17):
+    for num_backends in [4]:
         backend_config = sigmod_greedy(tpch, num_backends)
         #print([list(backend.keys()) for backend in backend_config]) 
         size = config_accessed_size(tpch, backend_config)
