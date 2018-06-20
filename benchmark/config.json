@@ -1,0 +1,33 @@
+
+{
+	"connections": [
+		{
+			"host": "vm-tuk18-hana01.eaalab.hpi.uni-potsdam.de",
+			"port": "30015",
+			"user": "SYSTEM",
+			"password": "manager",
+			"queries": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+		},
+		{
+			"host": "vm-tuk18-hana02.eaalab.hpi.uni-potsdam.de",
+			"port": "30015",
+			"user": "SYSTEM",
+			"password": "manager",
+			"queries": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+		},
+		{
+			"host": "vm-tuk18-hana03.eaalab.hpi.uni-potsdam.de",
+			"port": "30015",
+			"user": "SYSTEM",
+			"password": "manager",
+			"queries": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+		},
+		{
+			"host": "vm-tuk18-hana04.eaalab.hpi.uni-potsdam.de",
+			"port": "30015",
+			"user": "SYSTEM",
+			"password": "manager",
+			"queries": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+		}
+]
+}

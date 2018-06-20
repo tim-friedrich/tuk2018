@@ -1,0 +1,17 @@
+
+
+##############################
+## Starting benchmark with:
+## mode: all_random
+## seed: 5914
+## repetitions: 20
+## processes: 30
+## Database:
+## host: vm-tuk18-hana01.eaalab.hpi.uni-potsdam.de
+## port: 30015
+## user: SYSTEM
+##############################
+
+
+Starting to benchmark all tpch queries in a random order within: 1 minutes...
+Total Number of executed Queries in average  81.4

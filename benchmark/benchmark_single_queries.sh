@@ -1,0 +1,1 @@
+python3 benchmark.py single --repetitions 20 > results/single_queries_result

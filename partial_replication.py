@@ -2,6 +2,9 @@
 import itertools
 import time
 import math
+import re
+import sys
+
 from fractions import Fraction
 import copy
 
@@ -140,12 +143,15 @@ class TPCH():
 
     @staticmethod
     def add_load(queries):
-        with open("TPC-H_load.txt") as f:
+        regex = re.compile('Query: (\\d+)(?:\\.sql){0,1} performed at an average of: ([\\d.]+) seconds')
+        with open(sys.argv[1]) as f:
             lines = f.read().split('\n')
-            i = 0
-            for line in lines[2:24]:
-                queries[i]._load = int(float(line.split()[1])*100)
-                i += 1
+            for line in lines:
+                match = regex.match(line)
+                if match:
+                    index = int(match.group(1)) - 1
+                    load = int(float(match.group(2))*100)
+                    queries[index]._load = load
             sum_load = sum([q._load for q in queries])
             for q in queries:
                 q._load = Fraction(q._load, sum_load)
@@ -362,6 +368,9 @@ def sigmod_greedy(benchmark, num_backends, load = None):
 
 if __name__ == '__main__':
 # TPC-H
+    if len(sys.argv) < 2:
+        sys.exit('Path to results file missing')
+    
     tables = TPCH.parse_tables('TPC-H_attribute_sizes.txt')
     queries = TPCH.parse_queries(tables)
     TPCH.add_load(queries)
@@ -389,7 +398,7 @@ if __name__ == '__main__':
     accessed_columns = Benchmark_accessed_columns(tpch)
     accessed_size = sum([c.size() for c in accessed_columns])
     print("sum_size", sum_size/accessed_size)
-    for num_backends in range(1, 17):
+    for num_backends in [4]:
         backend_config = sigmod_greedy(tpch, num_backends)
         #print([list(backend.keys()) for backend in backend_config]) 
         size = config_accessed_size(tpch, backend_config)
