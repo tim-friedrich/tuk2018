@@ -12,7 +12,7 @@ query_manager = None
 
 # executes a random query from the queries array
 def executeRandomQuery(connection):
-    connection.runQuery(query_manager.getRandomQuery())
+    return connection.runQuery(query_manager.getRandomQuery())
 
 # Executes a random selection of queries until a time threshold is reached
 def runRandomQueriesFor(minutes):
@@ -22,11 +22,10 @@ def runRandomQueriesFor(minutes):
         number_queries = 0
 
         while(time.time() - start_time <= minutes*60):
-            executeRandomQuery(connection)
-            number_queries += 1
+            number_queries += executeRandomQuery(connection)
         return number_queries
     except:
-        print( "Unexpected error:", sys.exc_info()[0])
+        print( "Unexpected error:", sys.exc_info())
 
 def benchmarkRandomQueries():
     query_count = 0

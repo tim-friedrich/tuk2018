@@ -1,8 +1,9 @@
-import pyhdb;
-import json;
-import re;
-import pdb;
-import random;
+import pyhdb
+import json
+import re
+import pdb
+import random
+import sys
 from queryManager import QueryManager
 
 class ConnectionManager:
@@ -45,15 +46,22 @@ class ConnectionManager:
         with open('config.json', 'r') as f:
             return json.load(f)
 
-    def executeQuery(self, query, connection):
+    def executeQuery(self, query, connection, query_num):
         subqueries = re.sub(';\\s+', ';', query).split(';')
-        for q in subqueries:
-            if len(q) > 0:
-                connection.cursor().execute(q)
+        try:
+            for q in subqueries:
+                if len(q) > 0:
+                    connection.cursor().execute(q)
+            return 1
+        except:
+            print("Unexpected error on " + connection.host + " with query " + query_num + ": " + sys.exc_info()[1])
+            return 0
 
     def runQuery(self, query_num):
-        self.executeQuery(
-            self.query_manager.parameterizedQuery(str(query_num)).decode("utf-8"),
-            self.selectConnectionFor(query_num)
+        connection = self.selectConnectionFor(query_num)
+        return self.executeQuery(
+            self.query_manager.parameterizedQuery(str(query_num)),
+            connection,
+            query_num
         )
 
