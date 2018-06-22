@@ -54,7 +54,7 @@ class ConnectionManager:
                     connection.cursor().execute(q)
             return 1
         except:
-            print("Unexpected error on " + connection.host + " with query " + query_num + ": " + sys.exc_info()[1])
+            print("Unexpected error on " + connection.host + " with query " + str(query_num) + ":", sys.exc_info()[1])
             return 0
 
     def runQuery(self, query_num):
