@@ -6,13 +6,23 @@ import random
 import sys
 from queryManager import QueryManager
 
+class Connection:
+    
+    def __init__(self, host, port, user, password, queries):
+        self.host = host
+        self.port = port
+        self.user = user
+        self.password = password
+        self.queries = queries
+
+
 class ConnectionManager:
 
     def __init__(self, use_cluster):
         self.config = self.loadConfig()
+        self.connections = self.loadConnections()
         self.use_cluster = use_cluster
         self.query_manager = QueryManager()
-        self.openConnections()
         self.queryToServerMap = self.initServerQueryMap()
 
     def initServerQueryMap(self):
@@ -24,18 +34,6 @@ class ConnectionManager:
                     map[query_num].add(self.connections[idx])
         return map
 
-    def openConnections(self):
-        self.connections = []
-        for con in self.config['connections']:
-            self.connections.append(
-                pyhdb.connect(
-                    host = con['host'],
-                    port = con['port'],
-                    user = con['user'],
-                    password = con['password']
-                )
-            )
-
     def selectConnectionFor(self, query_num):
         if not self.use_cluster:
             return self.connections[0]
@@ -45,13 +43,32 @@ class ConnectionManager:
     def loadConfig(self):
         with open('config.json', 'r') as f:
             return json.load(f)
+    
+    def loadConnections(self):
+        connections = {}
+        for idx, serverConf in enumerate(self.config['connections']):
+            connections[idx] = Connection(
+                host = serverConf['host'],
+                port = serverConf['port'],
+                user = serverConf['user'],
+                password = serverConf['password'],
+                queries = serverConf['queries']
+            )
+        return connections
 
     def executeQuery(self, query, connection, query_num):
         subqueries = re.sub(';\\s+', ';', query).split(';')
         try:
+            con = pyhdb.connect(
+                host = connection.host,
+                port = connection.port,
+                user = connection.user,
+                password = connection.password
+            )
             for q in subqueries:
                 if len(q) > 0:
-                    connection.cursor().execute(q)
+                    con.cursor().execute(q)
+            con.close()
             return 1
         except:
             print("Unexpected error on " + connection.host + " with query " + str(query_num) + ":", sys.exc_info()[1])
