@@ -4,16 +4,16 @@ import re
 import pdb
 import random
 import sys
+from fractions import Fraction
 from queryManager import QueryManager
 
 class Connection:
     
-    def __init__(self, host, port, user, password, queries):
+    def __init__(self, host, port, user, password):
         self.host = host
         self.port = port
         self.user = user
         self.password = password
-        self.queries = queries
 
 
 class ConnectionManager:
@@ -28,17 +28,29 @@ class ConnectionManager:
     def initServerQueryMap(self):
         map = {}
         for query_num in range(1, 23):
-            map[query_num] = set()
+            map[query_num] = []
             for idx, serverConf in enumerate(self.config['connections']):
                 if query_num in serverConf['queries']:
-                    map[query_num].add(self.connections[idx])
+                    if str(query_num) in serverConf['fractions'].keys():
+                        numerator = serverConf['fractions'][str(query_num)][0]
+                        denominator = serverConf['fractions'][str(query_num)][1]
+                        fraction = Fraction(numerator, denominator)
+                    else:
+                        fraction = Fraction(1, 1)
+                    map[query_num].append((self.connections[idx], fraction))
+            map[query_num].sort(key=getFraction)
         return map
 
     def selectConnectionFor(self, query_num):
         if not self.use_cluster:
-            return self.connections[0]
+            return self.connections[0][0]
 
-        return random.sample(self.queryToServerMap[query_num], 1)[0]
+        rnd = Fraction(random.uniform(0, 1))
+        fraction = Fraction(0)
+        for tpl in self.queryToServerMap[query_num]:
+            fraction += tpl[1]
+            if rnd <= fraction:
+                return tpl[0]
 
     def loadConfig(self):
         with open('config.json', 'r') as f:
@@ -51,8 +63,7 @@ class ConnectionManager:
                 host = serverConf['host'],
                 port = serverConf['port'],
                 user = serverConf['user'],
-                password = serverConf['password'],
-                queries = serverConf['queries']
+                password = serverConf['password']
             )
         return connections
 
@@ -82,3 +93,5 @@ class ConnectionManager:
             query_num
         )
 
+def getFraction(tpl):
+    return tpl[1]
