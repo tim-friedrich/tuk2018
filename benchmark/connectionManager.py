@@ -4,6 +4,7 @@ import re
 import pdb
 import random
 import sys
+import time
 from fractions import Fraction
 from queryManager import QueryManager
 
@@ -43,7 +44,7 @@ class ConnectionManager:
 
     def selectConnectionFor(self, query_num):
         if not self.use_cluster:
-            return self.connections[0][0]
+            return self.connections[0]
 
         rnd = Fraction(random.uniform(0, 1))
         fraction = Fraction(0)
@@ -76,10 +77,12 @@ class ConnectionManager:
                 user = connection.user,
                 password = connection.password
             )
+            # query_start = time.time()
             for q in subqueries:
                 if len(q) > 0:
                     con.cursor().execute(q)
             con.close()
+            # print("Ran query", query_num, "for", time.time() - query_start, "on", connection.host)
             return 1
         except:
             print("Unexpected error on " + connection.host + " with query " + str(query_num) + ":", sys.exc_info()[1])

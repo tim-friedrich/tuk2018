@@ -20,19 +20,24 @@ def runRandomQueriesFor(minutes):
         connection = ConnectionManager(True)
         start_time = time.time()
         number_queries = 0
-
+        # print("Start queries at", start_time, " for ", minutes*60)
         while(time.time() - start_time <= minutes*60):
             number_queries += executeRandomQuery(connection)
+            
+        # print("Stop queries after", time.time() - start_time)
         return number_queries
     except:
         print( "Unexpected error:", sys.exc_info())
 
 def benchmarkRandomQueries():
     query_count = 0
+    started_at = time.time()
     for i in range(0, num_repetitions):
         with Pool(processes=num_processes) as p:
             query_count += sum(p.map(runRandomQueriesFor, [duration]*num_processes))
 
+    total_duration = time.time() - started_at
+    print("Ran for", total_duration, "in total and", total_duration/num_repetitions, "in average.")
     print("Total Number of executed Queries in average ", query_count/num_repetitions)
 
 def benchmarkAllQueries():
