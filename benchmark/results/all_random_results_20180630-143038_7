@@ -1,0 +1,14 @@
+
+
+##############################
+## Starting benchmark with:
+## mode: all_random
+## seed: 5914
+## repetitions: 20
+## processes: 20
+##############################
+
+
+Starting to benchmark all tpch queries in a random order within: 7 minutes...
+Ran for 9925.579919099808 in total and 496.27899595499036 in average.
+Total Number of executed Queries in average  664.0
